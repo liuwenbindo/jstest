@@ -16,7 +16,7 @@ function generate_table() {
             type: "GET",
             url: "./sample.csv",
             dataType: "text",
-            success: function(data) { console.log(data); }
+            success: function(data) { alert(data); }
          });
     });
 
@@ -48,8 +48,6 @@ function import_corr(ticker_list){
     tbl_body.appendChild(row);
   }
 }
-
-
 
 function split_data(data_text){
   var all_lines = data_text.split(/\r\n|\n/);
