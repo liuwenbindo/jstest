@@ -11,23 +11,14 @@ function generate_table() {
     // Add function to read the correlation Matrix
 
     // Ajax solution
-    // $(document).ready(function() {
-    //     $.ajax({
-    //         type: "GET",
-    //         url: "./sample.csv",
-    //         dataType: "text",
-    //         success: function(data) { console.log(data); }
-    //      });
-    // });
-    var txt = '';
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function(){
-      if(xmlhttp.status == 200 && xmlhttp.readyState == 4){
-        txt = xmlhttp.responseText;
-      }
-    };
-    xmlhttp.open("GET","sample.csv",true);
-    xmlhttp.send();
+    $(document).ready(function() {
+        $.ajax({
+            type: "GET",
+            url: "./sample.csv",
+            dataType: "text",
+            success: function(data) { console.log(data); }
+         });
+    });
 
     // Read csv as string
 
