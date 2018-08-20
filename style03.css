@@ -13,6 +13,7 @@ table {
 
 #corr_table {
   max-width: 100%;
+  margin-left: 100px;
 }
 
 #import_button {
@@ -21,6 +22,7 @@ table {
 
 #price_table {
   float:left;
+  margin-top: 50px;
 }
 
 #select_div {
