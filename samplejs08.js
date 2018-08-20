@@ -11,7 +11,9 @@ function generate_table() {
     read_data(corr_path, write_corr);
 }
 
+
 var tickerlist = ["SPX Index", "IBM US Equity", "GOOG US Equity", "FB US Equity", "AMZN US Equity", "BABA US Equity", "MSFT US Equity", "NDX Index", "VIX Index"];
+
 
 function read_data( path_name, callback ) {
   $.ajax({
@@ -131,11 +133,11 @@ function new_html( ticArr, datastrArr ){
   var stylelink = newHTMLDocument.createElement("link");
   stylelink.rel = "stylesheet";
   stylelink.type = "text/css";
-  stylelink.href = "https://cdn.rawgit.com/liuwenbindo/jstest/master/style03.css";
+  stylelink.href = "https://cdn.rawgit.com/liuwenbindo/jstest/master/style04.css";
   newHTMLDocument.head.appendChild(stylelink);
 
   var js_ctrl = newHTMLDocument.createElement("script");
-  js_ctrl.src = "https://cdn.rawgit.com/liuwenbindo/jstest/master/samplejs07.js"
+  js_ctrl.src = "https://cdn.rawgit.com/liuwenbindo/jstest/master/samplejs08.js"
   newHTMLDocument.head.appendChild(js_ctrl);
 
   var jq_ctrl = newHTMLDocument.createElement("script");
@@ -167,6 +169,9 @@ function new_html( ticArr, datastrArr ){
   }
 
   try {
+    var h1 = newHTMLDocument.createElement("h1");
+    h1.innerHTML = "Raw Data Display";
+    newHTMLDocument.body.appendChild(h1);
     newHTMLDocument.body.appendChild(tbl);
     tbl.appendChild(tbl_body);
   } catch(e) {
@@ -175,7 +180,7 @@ function new_html( ticArr, datastrArr ){
 
   // add the multiple selection box for tickers
   add_select(newHTMLDocument, tickerlist);
-  newHTMLDocument.getElementById("select_div").innerHTML += "<input type = 'button' value ='Submit' onclick ='click_func(); return false;'>"
+  newHTMLDocument.getElementById("select_div").innerHTML += "<br><input type = 'button' value ='Submit' onclick ='click_func(); return false;'>"
 
   // Display the HTML document in the new window
   var htmlstr = "<html>" + newHTMLDocument.documentElement.innerHTML + "</html>";
@@ -216,6 +221,10 @@ function add_select( doc, tickerlist ) {
   var thisdiv = document.createElement("div");
   thisdiv.id = "select_div";
 
+  var h3 = document.createElement("h3");
+  h2.innerHTML = "Please select 2 tickers to check their raw data table."
+  thisdiv.appendChild(h3);
+
   var select1 = document.createElement("select");
   select1.id = "select_list_1";
   var opt1 = document.createElement("option");
@@ -240,7 +249,9 @@ function add_select( doc, tickerlist ) {
     select2.appendChild(thisopt2);
   }
   thisdiv.appendChild(select1);
+  thisdiv.innerHTML += "<br>";
   thisdiv.appendChild(select2);
+  thisdiv.innerHTML += "<br>";
   doc.body.appendChild(thisdiv);
 }
 
