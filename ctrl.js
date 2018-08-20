@@ -133,11 +133,11 @@ function new_html( ticArr, datastrArr ){
   var stylelink = newHTMLDocument.createElement("link");
   stylelink.rel = "stylesheet";
   stylelink.type = "text/css";
-  stylelink.href = "https://cdn.rawgit.com/liuwenbindo/jstest/master/style06.css";
+  stylelink.href = "https://cdn.rawgit.com/liuwenbindo/jstest/master/stylesheet.css";
   newHTMLDocument.head.appendChild(stylelink);
 
   var js_ctrl = newHTMLDocument.createElement("script");
-  js_ctrl.src = "https://cdn.rawgit.com/liuwenbindo/jstest/master/samplejs10.js"
+  js_ctrl.src = "https://cdn.rawgit.com/liuwenbindo/jstest/master/ctrl.js"
   newHTMLDocument.head.appendChild(js_ctrl);
 
   var jq_ctrl = newHTMLDocument.createElement("script");
