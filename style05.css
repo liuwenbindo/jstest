@@ -22,11 +22,15 @@ table {
 
 #price_table {
   float:left;
-  margin-top: 50px;
+  margin-left: 20px;
 }
 
 #select_div {
   float:left;
   width: 20%;
-  padding-left: 40px;
+  padding-left: 50px;
+}
+
+#raw_header {
+  margin-left: 20px;
 }
