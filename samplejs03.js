@@ -173,7 +173,7 @@ function new_html_2tics( tic1, tic2, str1, str2 ) {
   newHTMLDocument.head.appendChild(stylelink);
 
   var js_ctrl = newHTMLDocument.createElement("script");
-  js_ctrl.src = "https://cdn.rawgit.com/liuwenbindo/jstest/master/samplejs.js"
+  js_ctrl.src = "https://cdn.rawgit.com/liuwenbindo/jstest/master/samplejs02.js"
   newHTMLDocument.head.appendChild(js_ctrl);
 
   var tbl = newHTMLDocument.createElement("table");
@@ -214,17 +214,7 @@ function new_html_2tics( tic1, tic2, str1, str2 ) {
   }
 
   add_select(newHTMLDocument, tickerlist);
-  newHTMLDocument.getElementById("select_div").innerHTML += "<input type = 'button' value ='Submit' onclick ='samplefunc(); return false;'>"
-
-  // newHTMLDocument.getElementById("input_button").onclick = function() {
-  //     var values = $("#select_list").val();
-  //     if (count == 1) {
-  //
-  //     } else if (count == 2) {
-  //
-  //     } else {
-  //         alert("Please select 1 or 2 options.");
-  //     }};
+  newHTMLDocument.getElementById("select_div").innerHTML += "<input type = 'button' value ='Submit' onclick ='click_func(); return false;'>"
 
   // Display the HTML document in the new window
   var htmlstr = "<html>" + newHTMLDocument.documentElement.innerHTML + "</html>";
@@ -269,25 +259,23 @@ function add_select( doc, tickerlist ) {
   select1.id = "select_list_1";
   var opt1 = document.createElement("option");
   opt1.value = 0;
-  opt1.innerHTML = "Select ticker 1";
+  opt1.innerHTML = "Select ticker 1"
   select1.appendChild(opt1);
 
   var select2 = document.createElement("select");
   select2.id = "select_list_2";
   var opt2 = document.createElement("option");
   opt2.value = 0;
-  opt2.innerHTML = "Select ticker 2";
+  opt2.innerHTML = "Select ticker 2"
   select2.appendChild(opt2);
 
   list_len = tickerlist.length;
   for (var i = 0; i < list_len; i++){
     var thisopt1 = document.createElement("option");
     var thisopt2 = document.createElement("option");
-    thisopt1.value = i;
-    thisopt1.innerHTML = tickerlist[i];
+    thisopt1.value = thisopt1.innerHTML = tickerlist[i];
     select1.appendChild(thisopt1);
-    thisopt2.value = i;
-    thisopt2.innerHTML = tickerlist[i];
+    thisopt2.value = thisopt2.innerHTML = tickerlist[i];
     select2.appendChild(thisopt2);
   }
   thisdiv.appendChild(select1);
@@ -296,9 +284,18 @@ function add_select( doc, tickerlist ) {
 }
 
 
-function samplefunc() {
-  var s = document.getElementById("select_list_1");
-  var opt = s.options[s.selectedIndex].text;
-  var num = s.options[s.selectedIndex].value;
-  console.log(opt, num)
+function click_func() {
+  var s1 = document.getElementById("select_list_1");
+  var s2 = document.getElementById("select_list_2");
+  var opt1 = s1.options[s.selectedIndex].text;
+  var opt2 = s2.options[s.selectedIndex].text;
+  var val1 = s1.options[s.selectedIndex].value;
+  var val2 = s2.options[s.selectedIndex].value;
+
+  if (val1 == 0 || val2 == 0) {
+    alert('Please select 2 asset tickers.');
+  } else {
+    var newstr = opt1 + "," + opt2;
+    read_2_data(newstr);
+  }
 }
