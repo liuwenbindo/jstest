@@ -268,22 +268,26 @@ function add_select( doc, tickerlist ) {
   var select1 = document.createElement("select");
   select1.id = "select_list_1";
   var opt1 = document.createElement("option");
-  opt1.value = opt1.innerHTML = "Select ticker 1"
+  opt1.value = 0;
+  opt1.innerHTML = "Select ticker 1";
   select1.appendChild(opt1);
 
   var select2 = document.createElement("select");
   select2.id = "select_list_2";
   var opt2 = document.createElement("option");
-  opt2.value = opt2.innerHTML = "Select ticker 2"
+  opt2.value = 0;
+  opt2.innerHTML = "Select ticker 2";
   select2.appendChild(opt2);
 
   list_len = tickerlist.length;
   for (var i = 0; i < list_len; i++){
     var thisopt1 = document.createElement("option");
     var thisopt2 = document.createElement("option");
-    thisopt1.value = thisopt1.innerHTML = tickerlist[i];
+    thisopt1.value = i;
+    thisopt1.innerHTML = tickerlist[i];
     select1.appendChild(thisopt1);
-    thisopt2.value = thisopt2.innerHTML = tickerlist[i];
+    thisopt2.value = i;
+    thisopt2.innerHTML = tickerlist[i];
     select2.appendChild(thisopt2);
   }
   thisdiv.appendChild(select1);
@@ -295,5 +299,6 @@ function add_select( doc, tickerlist ) {
 function samplefunc() {
   var s = document.getElementById("select_list_1");
   var opt = s.options[s.selectedIndex].text;
+  var num = s.options[s.selectedIndex].value;
   console.log(opt)
 }
