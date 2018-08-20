@@ -14,3 +14,11 @@ table {
 #import_button {
   width: 200px;
 }
+
+#price_table {
+  float:left;
+}
+
+#select_div {
+  float:left;
+}
