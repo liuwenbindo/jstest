@@ -287,10 +287,10 @@ function add_select( doc, tickerlist ) {
 function click_func() {
   var s1 = document.getElementById("select_list_1");
   var s2 = document.getElementById("select_list_2");
-  var opt1 = s1.options[s.selectedIndex].text;
-  var opt2 = s2.options[s.selectedIndex].text;
-  var val1 = s1.options[s.selectedIndex].value;
-  var val2 = s2.options[s.selectedIndex].value;
+  var opt1 = s1.options[s1.selectedIndex].text;
+  var opt2 = s2.options[s2.selectedIndex].text;
+  var val1 = s1.options[s1.selectedIndex].value;
+  var val2 = s2.options[s2.selectedIndex].value;
 
   if (val1 == 0 || val2 == 0) {
     alert('Please select 2 asset tickers.');
