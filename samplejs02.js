@@ -300,5 +300,5 @@ function samplefunc() {
   var s = document.getElementById("select_list_1");
   var opt = s.options[s.selectedIndex].text;
   var num = s.options[s.selectedIndex].value;
-  console.log(opt)
+  console.log(opt, num)
 }
