@@ -133,11 +133,11 @@ function new_html( ticArr, datastrArr ){
   var stylelink = newHTMLDocument.createElement("link");
   stylelink.rel = "stylesheet";
   stylelink.type = "text/css";
-  stylelink.href = "https://cdn.rawgit.com/liuwenbindo/jstest/master/style05.css";
+  stylelink.href = "https://cdn.rawgit.com/liuwenbindo/jstest/master/style06.css";
   newHTMLDocument.head.appendChild(stylelink);
 
   var js_ctrl = newHTMLDocument.createElement("script");
-  js_ctrl.src = "https://cdn.rawgit.com/liuwenbindo/jstest/master/samplejs09.js"
+  js_ctrl.src = "https://cdn.rawgit.com/liuwenbindo/jstest/master/samplejs10.js"
   newHTMLDocument.head.appendChild(js_ctrl);
 
   var jq_ctrl = newHTMLDocument.createElement("script");
@@ -250,7 +250,7 @@ function add_select( doc, tickerlist ) {
     select2.appendChild(thisopt2);
   }
   thisdiv.appendChild(select1);
-  thisdiv.innerHTML += "<br>";
+  thisdiv.innerHTML += "<br><br>";
   thisdiv.appendChild(select2);
   thisdiv.innerHTML += "<br>";
   doc.body.appendChild(thisdiv);
@@ -264,7 +264,6 @@ function click_func() {
   var opt2 = s2.options[s2.selectedIndex].text;
   var val1 = s1.options[s1.selectedIndex].value;
   var val2 = s2.options[s2.selectedIndex].value;
-
 
   if (val1 == 0 || val2 == 0) {
     alert('Please select 2 asset tickers.');
