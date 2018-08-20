@@ -2,12 +2,19 @@
 <html>
 <head>
   <title>Correlation Matrix Table</title>
+  <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/liuwenbindo/jstest/master/style03.css">
   <script src="./js/ctrl.js"></script>
   <script src="./js/jquery-3.3.1.min.js"></script>
 </head>
 
 <body>
-  <input type = "button" value = "Generate Table Here." onclick="generate_table(); return false;"/>
+  <h1>Correlation Matrix Summary</h1>
+  <p>Import the csv file containing the correlation matrix.</p>
+  <p>csv path: <a href="https://github.com/liuwenbindo/jstest/blob/master/corr_matrix.csv">https://github.com/liuwenbindo/jstest/blob/master/corr_matrix.csv</a></p>
+  <p>raw data path: <a href="https://github.com/liuwenbindo/jstest/tree/master/data">https://github.com/liuwenbindo/jstest/tree/master/data</a></p>
+  <input id = "import_button" type = "button" value = "Import Correlation Matrix" onclick="generate_table(); return false;"/>
+  <br><br>
+  <table id = "corr_table"></table>
 </body>
 
 </html>
