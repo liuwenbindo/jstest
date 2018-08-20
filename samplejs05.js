@@ -7,12 +7,12 @@ function generate_table() {
 
     // Add function to read the correlation Matrix
     // Ajax solution.
-    read_data('./sample.csv', write_corr);
+    var corr_path = "https://cdn.rawgit.com/liuwenbindo/jstest/master/sample.csv"
+    read_data(corr_path, write_corr);
 }
 
-var tickerlist = [];
 
-function read_data(path_name, callback) {
+function read_data( path_name, callback ) {
   $.ajax({
       type: "GET",
       url: path_name,
@@ -24,12 +24,25 @@ function read_data(path_name, callback) {
 
 function write_corr( data_text ){
   var lines = split_csv_by_row(data_text);
-  tickerlist = lines[0].slice(1);
-  import_corr(lines);
+  var tickerlist = lines[0].slice(1);
+  import_corr(lines, tickerlist);
 }
 
 
-function import_corr( data_list ){
+function read_ticker( path_name ){
+  var lines, tickerlist;
+  $.ajax({
+      type: "GET",
+      url: path_name,
+      dataType: "text",
+      success: function(data) { lines = split_csv_by_row(data); }
+   });
+  tickerlist = lines[0].slice(1);
+  return tickerlist;
+}
+
+
+function import_corr( data_list, tickerlist ){
   var tbl_body = document.getElementById("corr_table").getElementsByTagName("tbody")[0];
   for (var i = 0; i < data_list.length-1; i++){
     var row = document.createElement("tr"); //current row
@@ -38,7 +51,7 @@ function import_corr( data_list ){
       cell.innerHTML = data_list[i][j];
       cell.id = data_list[i][0] + ',' + data_list[0][j];
       cell.addEventListener("click", function(){
-        read_2_data(this.id);
+        read_2_data( this.id, tickerlist );
       });
       row.appendChild(cell);
     }
@@ -60,15 +73,20 @@ function split_csv_by_row(data_text){
 function split_csv_by_col(data_text){
   var all_lines = data_text.split(/\r\n|\n/);
   var cols = [[],[]];
-  for (var i = 1; i < all_lines.length; i++) {
+  for (var i = 0; i < all_lines.length; i++) {
+    if (i == 0){
+      cols[0].push(all_lines[i].split(',')[0]);
+      cols[1].push(all_lines[i].split(',')[1]);
+    } else {
     cols[0].push(parseInt(all_lines[i].split(',')[0]));
     cols[1].push(all_lines[i].split(',')[1]);
+    }
   }
   return cols;
 }
 
 
-function read_2_data(str){
+function read_2_data( str, tickerlist ){
   var tic1 = str.split(',')[0].split(' ')[0]
   var tic2 = str.split(',')[1].split(' ')[0]
 
@@ -78,9 +96,9 @@ function read_2_data(str){
     $.ajax({ type: "GET",
              url: path0,
              dataType: "text",
-             success: function(data) { new_html_1tic(tic1, data); }
+             success: function(data) { new_html( [tic1], [data], tickerlist ); }
           });
-  } else {
+  } else if (tic1 != "" && tic2 != "") {
 
   var path1 = "../data/" + tic1 + ".csv";
   var path2 = "../data/" + tic2 + ".csv";
@@ -91,19 +109,35 @@ function read_2_data(str){
   $.when(ajax1, ajax2)
     .done( function(res1, res2){
       // Do something with the 2 csv files
-      new_html_2tics(tic1, tic2, res1[0], res2[0]);
+      new_html( [tic1, tic2], [res1[0], res2[0]], tickerlist );
     })
     .fail( function(){
       console.log('An Error occurred.')
     });
+  } else {
+    console.log('Please click the data range.')
   }
 }
 
 
-function new_html_1tic( tic, datastr ){
+function new_html( ticArr, datastrArr, tickerlist ){
 
-  var list0 = split_csv_by_row(datastr);
+  var list, col_num, header_arr = [];
+  if (ticArr.length == 1) {
+    list = split_csv_by_row(datastrArr[0]);
+    col_num = 2;
+    header_arr = ['Date', ticArr[0]];
+  } else if (ticArr.length == 2) {
+    var list1 = split_csv_by_col(datastrArr[0]);
+    var list2 = split_csv_by_col(datastrArr[1]);
+    list = outerjoin(list1, list2);
+    col_num = 3;
+    header_arr = ['Date', ticArr[0], ticArr[1]];
+  } else {
+    console.log('Abnormal ticker array size.')
+  }
 
+  // use 2 arrays and tickers to generate new HTML page with table.
   var newHTMLDocument = document.implementation.createHTMLDocument("Raw Data Display");
 
   var stylelink = newHTMLDocument.createElement("link");
@@ -112,26 +146,33 @@ function new_html_1tic( tic, datastr ){
   stylelink.href = "https://cdn.rawgit.com/liuwenbindo/jstest/master/style02.css";
   newHTMLDocument.head.appendChild(stylelink);
 
+  var js_ctrl = newHTMLDocument.createElement("script");
+  js_ctrl.src = "https://cdn.rawgit.com/liuwenbindo/jstest/master/samplejs04.js"
+  newHTMLDocument.head.appendChild(js_ctrl);
+
+  var jq_ctrl = newHTMLDocument.createElement("script");
+  jq_ctrl.src = "https://cdn.rawgit.com/liuwenbindo/jstest/master/js/jquery-3.3.1.min.js"
+  newHTMLDocument.head.appendChild(jq_ctrl);
+
   var tbl = newHTMLDocument.createElement("table");
   tbl.id = "price_table";
   var tbl_body = newHTMLDocument.createElement("tbody");
   var tr = newHTMLDocument.createElement("tr");
   var th = []
-  for (var i = 0; i < 2; i++) {
+  for (var i = 0; i < col_num; i++) {
      th.push(newHTMLDocument.createElement("th"));
+     th[i].innerHTML = header_arr[i];
      tr.appendChild(th[i]);
   }
-  th[0].innerHTML = 'Date';
-  th[1].innerHTML = tic;
   tbl_body.appendChild(tr);
 
-  var leng = list0.length;
+  var leng = list.length;
   // Set table content rows
   for (var i = 1; i < leng-1; i++){
     var row = document.createElement("tr"); //current row
-    for (var j = 0; j < 2; j++){
+    for (var j = 0; j < col_num; j++){
       var cell = document.createElement("td");
-      cell.innerHTML = list0[i][j];
+      cell.innerHTML = list[i][j];
       row.appendChild(cell);
     }
     tbl_body.appendChild(row);
@@ -146,6 +187,7 @@ function new_html_1tic( tic, datastr ){
 
   // add the multiple selection box for tickers
   add_select(newHTMLDocument, tickerlist);
+  newHTMLDocument.getElementById("select_div").innerHTML += "<input type = 'button' value ='Submit' onclick ='click_func(); return false;'>"
 
   // Display the HTML document in the new window
   var htmlstr = "<html>" + newHTMLDocument.documentElement.innerHTML + "</html>";
@@ -153,75 +195,6 @@ function new_html_1tic( tic, datastr ){
   x.document.open();
   x.document.write(htmlstr);
   x.document.close();
-}
-
-
-
-function new_html_2tics( tic1, tic2, str1, str2 ) {
-  // split 2 csv strings into arrays, every element in the arrays is another list containing data of a column.
-  var list1 = split_csv_by_col(str1);
-  var list2 = split_csv_by_col(str2);
-  var result = outerjoin(list1, list2);
-
-  // use 2 arrays and tickers to generate new HTML page with table.
-  var newHTMLDocument = document.implementation.createHTMLDocument("Raw Data Display");
-
-  var stylelink = newHTMLDocument.createElement("link");
-  stylelink.rel = "stylesheet";
-  stylelink.type = "text/css";
-  stylelink.href = "https://cdn.rawgit.com/liuwenbindo/jstest/master/style02.css";
-  newHTMLDocument.head.appendChild(stylelink);
-
-  var js_ctrl = newHTMLDocument.createElement("script");
-  js_ctrl.src = "https://cdn.rawgit.com/liuwenbindo/jstest/master/samplejs02.js"
-  newHTMLDocument.head.appendChild(js_ctrl);
-
-  var tbl = newHTMLDocument.createElement("table");
-  tbl.id = "price_table";
-  var tbl_body = newHTMLDocument.createElement("tbody");
-
-  // Set table header row
-  var tr = newHTMLDocument.createElement("tr");
-  var th = []
-  for (var i = 0; i < 3; i++) {
-     th.push(newHTMLDocument.createElement("th"));
-     tr.appendChild(th[i]);
-  }
-  th[0].innerHTML = 'Date';
-  th[1].innerHTML = tic1;
-  th[2].innerHTML = tic2;
-  tbl_body.appendChild(tr);
-
-  var leng = result.length;
-  // Set table content rows
-  for (var i = 0; i < leng; i++){
-    var row = document.createElement("tr"); //current row
-    for (var j = 0; j < 3; j++){
-      var cell = document.createElement("td");
-      cell.innerHTML = result[i][j];
-      row.appendChild(cell);
-    }
-    tbl_body.appendChild(row);
-  }
-
-  // Append the table to HTML document
-  try {
-    tbl.appendChild(tbl_body);
-    newHTMLDocument.body.appendChild(tbl);
-  } catch(e) {
-    // Error handler.
-    console.log(e);
-  }
-
-  add_select(newHTMLDocument, tickerlist);
-  newHTMLDocument.getElementById("select_div").innerHTML += "<input type = 'button' value ='Submit' onclick ='click_func(); return false;'>"
-
-  // Display the HTML document in the new window
-  var htmlstr = "<html>" + newHTMLDocument.documentElement.innerHTML + "</html>";
-  var x = window.open()
-  x.document.open()
-  x.document.write(htmlstr)
-  x.document.close()
 }
 
 
@@ -292,10 +265,13 @@ function click_func() {
   var val1 = s1.options[s1.selectedIndex].value;
   var val2 = s2.options[s2.selectedIndex].value;
 
+  var corr_path = "https://cdn.rawgit.com/liuwenbindo/jstest/master/sample.csv"
+  var ticklist = read_ticker(corr_path);
+
   if (val1 == 0 || val2 == 0) {
     alert('Please select 2 asset tickers.');
   } else {
     var newstr = opt1 + "," + opt2;
-    read_2_data(newstr);
+    read_2_data(newstr, ticklist);
   }
 }
