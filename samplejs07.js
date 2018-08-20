@@ -135,7 +135,7 @@ function new_html( ticArr, datastrArr ){
   newHTMLDocument.head.appendChild(stylelink);
 
   var js_ctrl = newHTMLDocument.createElement("script");
-  js_ctrl.src = "https://cdn.rawgit.com/liuwenbindo/jstest/master/samplejs05.js"
+  js_ctrl.src = "https://cdn.rawgit.com/liuwenbindo/jstest/master/samplejs07.js"
   newHTMLDocument.head.appendChild(js_ctrl);
 
   var jq_ctrl = newHTMLDocument.createElement("script");
