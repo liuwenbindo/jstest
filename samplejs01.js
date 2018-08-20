@@ -157,7 +157,7 @@ function new_html_1tic( tic, datastr ){
 
 
 
-function new_html_2tics(tic1, tic2, str1, str2){
+function new_html_2tics( tic1, tic2, str1, str2 ) {
   // split 2 csv strings into arrays, every element in the arrays is another list containing data of a column.
   var list1 = split_csv_by_col(str1);
   var list2 = split_csv_by_col(str2);
@@ -171,6 +171,10 @@ function new_html_2tics(tic1, tic2, str1, str2){
   stylelink.type = "text/css";
   stylelink.href = "https://cdn.rawgit.com/liuwenbindo/jstest/master/style02.css";
   newHTMLDocument.head.appendChild(stylelink);
+
+  var js_ctrl = newHTMLDocument.createElement("script");
+  js_ctrl.src = "https://cdn.rawgit.com/liuwenbindo/jstest/master/samplejs.js"
+  newHTMLDocument.head.appendChild(js_ctrl);
 
   var tbl = newHTMLDocument.createElement("table");
   tbl.id = "price_table";
@@ -202,14 +206,15 @@ function new_html_2tics(tic1, tic2, str1, str2){
 
   // Append the table to HTML document
   try {
-    newHTMLDocument.body.appendChild(tbl);
     tbl.appendChild(tbl_body);
+    newHTMLDocument.body.appendChild(tbl);
   } catch(e) {
     // Error handler.
     console.log(e);
   }
 
   add_select(newHTMLDocument, tickerlist);
+  newHTMLDocument.getElementById("select_div").innerHTML += "<input type = 'button' value ='Submit' onclick ='samplefunc(); return false;'>"
 
   // newHTMLDocument.getElementById("input_button").onclick = function() {
   //     var values = $("#select_list").val();
@@ -259,27 +264,36 @@ function outerjoin (arr1, arr2){
 function add_select( doc, tickerlist ) {
   var thisdiv = document.createElement("div");
   thisdiv.id = "select_div";
-  var my_select = document.createElement("select");
-  my_select.id = "select_list";
-  my_select.multiple = true;
+
+  var select1 = document.createElement("select");
+  select1.id = "select_list_1";
+  var opt1 = document.createElement("option");
+  opt1.value = opt1.innerHTML = "Select ticker 1"
+  select1.appendChild(opt1);
+
+  var select2 = document.createElement("select");
+  select2.id = "select_list_2";
+  var opt2 = document.createElement("option");
+  opt2.value = opt2.innerHTML = "Select ticker 2"
+  select2.appendChild(opt2);
+
   list_len = tickerlist.length;
   for (var i = 0; i < list_len; i++){
-    var thisopt = document.createElement("option");
-    thisopt.value = thisopt.innerHTML = tickerlist[i];
-    my_select.appendChild(thisopt);
+    var thisopt1 = document.createElement("option");
+    var thisopt2 = document.createElement("option");
+    thisopt1.value = thisopt1.innerHTML = tickerlist[i];
+    select1.appendChild(thisopt1);
+    thisopt2.value = thisopt2.innerHTML = tickerlist[i];
+    select2.appendChild(thisopt2);
   }
-
-  var input_button = document.createElement("input");
-  input_button.type = "button";
-  input_button.id = "input_button";
-  input_button.value = "Submit";
-  input_button.onclick = "samplefunc();"
-
-  thisdiv.appendChild(my_select);
-  thisdiv.appendChild(input_button);
+  thisdiv.appendChild(select1);
+  thisdiv.appendChild(select2);
   doc.body.appendChild(thisdiv);
 }
 
+
 function samplefunc() {
-  alert("Something.");
+  var s = document.getElementById("select_list_1");
+  var opt = s.options[s.selectedIndex].text;
+  console.log(opt)
 }
