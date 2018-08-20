@@ -7,10 +7,11 @@ function generate_table() {
 
     // Add function to read the correlation Matrix
     // Ajax solution.
-    var corr_path = "https://cdn.rawgit.com/liuwenbindo/jstest/master/sample.csv"
+    var corr_path = "https://cdn.rawgit.com/liuwenbindo/jstest/master/corr_matrix.csv"
     read_data(corr_path, write_corr);
 }
 
+var tickerlist = ["SPX Index", "IBM US Equity", "GOOG US Equity", "FB US Equity", "AMZN US Equity", "BABA US Equity", "MSFT US Equity", "NDX Index", "VIX Index"];
 
 function read_data( path_name, callback ) {
   $.ajax({
@@ -26,19 +27,6 @@ function write_corr( data_text ){
   var lines = split_csv_by_row(data_text);
   var tickerlist = lines[0].slice(1);
   import_corr(lines, tickerlist);
-}
-
-
-function read_ticker( path_name ){
-  var lines, tickerlist;
-  $.ajax({
-      type: "GET",
-      url: path_name,
-      dataType: "text",
-      success: function(data) { lines = split_csv_by_row(data); }
-   });
-  tickerlist = lines[0].slice(1);
-  return tickerlist;
 }
 
 
@@ -86,7 +74,7 @@ function split_csv_by_col(data_text){
 }
 
 
-function read_2_data( str, tickerlist ){
+function read_2_data( str ){
   var tic1 = str.split(',')[0].split(' ')[0]
   var tic2 = str.split(',')[1].split(' ')[0]
 
@@ -96,7 +84,7 @@ function read_2_data( str, tickerlist ){
     $.ajax({ type: "GET",
              url: path0,
              dataType: "text",
-             success: function(data) { new_html( [tic1], [data], tickerlist ); }
+             success: function(data) { new_html( [tic1], [data] ); }
           });
   } else if (tic1 != "" && tic2 != "") {
 
@@ -109,7 +97,7 @@ function read_2_data( str, tickerlist ){
   $.when(ajax1, ajax2)
     .done( function(res1, res2){
       // Do something with the 2 csv files
-      new_html( [tic1, tic2], [res1[0], res2[0]], tickerlist );
+      new_html( [tic1, tic2], [res1[0], res2[0]] );
     })
     .fail( function(){
       console.log('An Error occurred.')
@@ -120,7 +108,7 @@ function read_2_data( str, tickerlist ){
 }
 
 
-function new_html( ticArr, datastrArr, tickerlist ){
+function new_html( ticArr, datastrArr ){
 
   var list, col_num, header_arr = [];
   if (ticArr.length == 1) {
@@ -143,11 +131,11 @@ function new_html( ticArr, datastrArr, tickerlist ){
   var stylelink = newHTMLDocument.createElement("link");
   stylelink.rel = "stylesheet";
   stylelink.type = "text/css";
-  stylelink.href = "https://cdn.rawgit.com/liuwenbindo/jstest/master/style02.css";
+  stylelink.href = "https://cdn.rawgit.com/liuwenbindo/jstest/master/style03.css";
   newHTMLDocument.head.appendChild(stylelink);
 
   var js_ctrl = newHTMLDocument.createElement("script");
-  js_ctrl.src = "https://cdn.rawgit.com/liuwenbindo/jstest/master/samplejs04.js"
+  js_ctrl.src = "https://cdn.rawgit.com/liuwenbindo/jstest/master/samplejs05.js"
   newHTMLDocument.head.appendChild(js_ctrl);
 
   var jq_ctrl = newHTMLDocument.createElement("script");
@@ -265,13 +253,11 @@ function click_func() {
   var val1 = s1.options[s1.selectedIndex].value;
   var val2 = s2.options[s2.selectedIndex].value;
 
-  var corr_path = "https://cdn.rawgit.com/liuwenbindo/jstest/master/sample.csv"
-  var ticklist = read_ticker(corr_path);
 
   if (val1 == 0 || val2 == 0) {
     alert('Please select 2 asset tickers.');
   } else {
     var newstr = opt1 + "," + opt2;
-    read_2_data(newstr, ticklist);
+    read_2_data(newstr);
   }
 }
