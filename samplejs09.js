@@ -133,7 +133,7 @@ function new_html( ticArr, datastrArr ){
   var stylelink = newHTMLDocument.createElement("link");
   stylelink.rel = "stylesheet";
   stylelink.type = "text/css";
-  stylelink.href = "https://cdn.rawgit.com/liuwenbindo/jstest/master/style04.css";
+  stylelink.href = "https://cdn.rawgit.com/liuwenbindo/jstest/master/style05.css";
   newHTMLDocument.head.appendChild(stylelink);
 
   var js_ctrl = newHTMLDocument.createElement("script");
@@ -171,6 +171,7 @@ function new_html( ticArr, datastrArr ){
   try {
     var h1 = newHTMLDocument.createElement("h1");
     h1.innerHTML = "Raw Data Display";
+    h1.id = "raw_header";
     newHTMLDocument.body.appendChild(h1);
     newHTMLDocument.body.appendChild(tbl);
     tbl.appendChild(tbl_body);
@@ -222,7 +223,7 @@ function add_select( doc, tickerlist ) {
   thisdiv.id = "select_div";
 
   var h3 = document.createElement("h3");
-  h3.innerHTML = "Please select 2 tickers to check their raw data table."
+  h3.innerHTML = "Please select 2 tickers to check their raw data."
   thisdiv.appendChild(h3);
 
   var select1 = document.createElement("select");
