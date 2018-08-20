@@ -137,7 +137,7 @@ function new_html( ticArr, datastrArr ){
   newHTMLDocument.head.appendChild(stylelink);
 
   var js_ctrl = newHTMLDocument.createElement("script");
-  js_ctrl.src = "https://cdn.rawgit.com/liuwenbindo/jstest/master/samplejs08.js"
+  js_ctrl.src = "https://cdn.rawgit.com/liuwenbindo/jstest/master/samplejs09.js"
   newHTMLDocument.head.appendChild(js_ctrl);
 
   var jq_ctrl = newHTMLDocument.createElement("script");
@@ -222,7 +222,7 @@ function add_select( doc, tickerlist ) {
   thisdiv.id = "select_div";
 
   var h3 = document.createElement("h3");
-  h2.innerHTML = "Please select 2 tickers to check their raw data table."
+  h3.innerHTML = "Please select 2 tickers to check their raw data table."
   thisdiv.appendChild(h3);
 
   var select1 = document.createElement("select");
