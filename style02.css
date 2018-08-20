@@ -21,4 +21,6 @@ table {
 
 #select_div {
   float:left;
+  width: 20%;
+  padding-left: 40px;
 }
