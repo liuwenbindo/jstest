@@ -11,6 +11,10 @@ table {
   border-collapse: collapse;
 }
 
+#corr_table {
+  max-width: 100%;
+}
+
 #import_button {
   width: 200px;
 }
